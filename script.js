@@ -2,8 +2,11 @@ i = 0;
 let library = document.getElementById("library");
 let bookFormButton = document.getElementById("bookFormButton");
 let addBookButton = document.getElementById("addBookButton");
+let closeFormButton = document.getElementById("closeFormButton");
 bookFormButton.addEventListener("click",openBookForm);
 addBookButton.addEventListener("click",addBookToLibrary);
+closeFormButton.addEventListener("click",closeBookForm);
+
 
 const myLibrary = [];
 
@@ -16,9 +19,11 @@ function Book(Title, Author, Pages, Status) {
 
 function bookToShelf() {
     while (i < myLibrary.length) {
-        library.innerHTML += `<div class="book"><h2>${myLibrary[i].Title}</h2><p>Author: ${myLibrary[i].Author}</p><p>Pages: ${myLibrary[i].Pages}</p><p>Status: ${myLibrary[i].Status}</p>`;
+        library.innerHTML += `<div class="book" id="${i}"><h2>${myLibrary[i].Title}</h2><p>Author: ${myLibrary[i].Author}</p><p>Pages: ${myLibrary[i].Pages}</p><p>Status: ${myLibrary[i].Status}</p><div class="options"><div><input type="checkbox" /><p>Finished</p></div><button class="deleteButton">Delete</button>`;
         i++;
     };
+    deleteButton = document.getElementsByClassName("deleteButton");
+    Array.from(deleteButton).forEach((Book) => Book.addEventListener("click",deleteBook));
 }
 
 function addBookToLibrary(Title, Author, Pages, Status) {
@@ -31,11 +36,19 @@ function addBookToLibrary(Title, Author, Pages, Status) {
     document.getElementById("addPopUp").style.display = "none";
     document.getElementById("bookForm").reset();
     bookToShelf();
-
-    
 };
 
 function openBookForm() {
     document.getElementById("addPopUp").style.display = "block";
+}
+
+function closeBookForm() {
+    document.getElementById("addPopUp").style.display = "none";
+    document.getElementById("bookForm").reset();
+}
+
+function deleteBook(e) {
+    id = e.target.parentNode.parentNode.getAttribute("id");
+    document.getElementById(`${id}`).remove();
 }
 
